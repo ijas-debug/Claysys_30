@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .navbar-logo {
+            width: 100px;
+            height: auto; 
+        }
+    </style>
+    
+</head>
+<body style="background-color: #D8F9F9">
+   
+    <header >
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+            <div class="container">
+                <a href="@Url.Action("Index", "Home", new { area = "" })" class="navbar-brand">
+                    <img src="https://www.cgiguangzhou.gov.in/docs/1507963852_download.jpg" alt="Logo" class="navbar-logo">
+                </a>
+
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                    @if (Session["EmailAddress"] == null)
+                    {
+                        <ul class="navbar-nav flex-grow-1 mr-auto">
+
+                            <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+
+                        </ul>
+                    }
+                </div>
+
+                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between" style="margin-right:0px">
+                    @if (Session["EmailAddress"] == null)
+                    {
+                        <ul class="navbar-nav flex-grow-1">
+
+                            <li>@Html.ActionLink("Sign up", "Index", "UserRegistration", new { area = "" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Sign in", "Index", "UserLogin", new { area = "" }, new { @class = "nav-link" })</li>
+
+                            
+                        </ul>
+                    }
+                    else if (Session["EmailAddress"].ToString() == "admin1@gmail.com")
+                    {
+                        <ul class="navbar-nav flex-grow-1 a">
+                            @{
+                                string user = Session["EmailAddress"].ToString();
+                            }
+
+
+                            <li>@Html.ActionLink("Welcome Admin", "adminwelcome", "Admin", new { area = "" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("View user", "UsersView", "Admin", new { area = "" }, new { @class = "nav-link" })</li>
+
+
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav flex-grow-1">
+
+                            @{
+                                string user = Session["EmailAddress"].ToString();
+                            }
+
+
+                            <li>@Html.ActionLink("Update details", "UpdateUser", "Login", new { area = "" }, new { @class = "nav-link" })</li>
+
+                        </ul>
+                    }
+
+                </div>
+
+
+            </div>
+        </nav>
+    </header>
+        <div class="container body-content">
+            
+                @RenderBody()
+            
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,121 @@
+﻿@model IEnumerable<FinalProject.Models.VisaApplication>
+
+@{
+    ViewBag.Title = "ApplicantsView";
+    Layout = "~/Views/Shared/_LayoutPageAdmin.cshtml";
+}
+
+<h2 class="text-center">Visa Applications</h2>
+
+@if (TempData["InfoMessage"] != null)
+{
+    <div class="alert alert-info">
+        <strong> Info ! </strong>  @TempData["InfoMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span>&times;</span>
+        </button>
+    </div>
+}
+
+else if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        <strong> Success ! </strong>  @TempData["SuccessMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span>&times;</span>
+        </button>
+    </div>
+}
+
+else if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        <strong> Error ! </strong>  @TempData["ErrorMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span>&times;</span>
+        </button>
+    </div>
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmailID)
+        </th>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.VisaService)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nationality)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Photo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailID)
+            </td>
+          
+            <td>
+                @Html.DisplayFor(modelItem => item.VisaService)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nationality)
+            </td>
+            <td>
+                @if (!string.IsNullOrEmpty(item.PhotoUrl))
+                {
+                    <img src="@item.PhotoUrl" alt="Image" height="150" width="150" />
+                }
+                else
+                {
+                    <img src="@Html.ViewData["Img"]" alt="Image" height="100" width="100" />
+
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @if (item.Status == "Pending")
+                {
+                    @Html.ActionLink("Approve", "ChangeStatus", new { id = item.ApplicationID, status = "approve" }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Reject", "ChangeStatus", new { id = item.ApplicationID, status = "reject" }, new { @class = "btn btn-danger" })
+                }
+            </td>
+
+
+            <td>
+                
+                @Html.ActionLink("Details", "ApplicantDetails", new { id = item.ApplicationID }, new { @class = "btn btn-success" }) &nbsp;&nbsp;&nbsp;|
+                @Html.ActionLink("Delete", "DeleteApplicant", new { id = item.ApplicationID }, new { @class = "btn btn-danger" })&nbsp;&nbsp;&nbsp;
+
+
+
+            </td>
+        </tr>
+    }
+
+</table>
